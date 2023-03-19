@@ -10,7 +10,7 @@ local function exists(filename)
     return filesystem.exists(shell.getWorkingDirectory().."/"..filename)
 end
 
-local repo = "http://github.com/NeroOneTrueKing/GTNH-Power/";
+local repo = "https://raw.githubusercontent.com/NeroOneTrueKing/GTNH-Power/";
 local branch = "main"
 
 for i=1, #scripts do
