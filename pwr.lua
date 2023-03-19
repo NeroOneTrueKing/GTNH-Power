@@ -55,9 +55,9 @@ function convert_value(eu, format)
     if format == "e" or format == "E" then
         return string.format("%3.2f %s%d", eu / math.pow(1000, exp), format, exp*3)
     elseif format == "p" or format == "P" then
-        return string.format("%2.2f %3s", eu / math.pow(1000, exp), prefx_str[exp])
+        return string.format("%2.2f %s", eu / math.pow(1000, exp), prefx_str[exp + 1])
     elseif format == "a" or format == "A" then
-        return string.format("%3.2f %s %s", eu / (math.pow(4, tier)*8), format, tiers_str[tier])
+        return string.format("%3.2f %s %3s", eu / (math.pow(4, tier)*8), format, tiers_str[tier])
     else
         return string.format("%.2f", eu)
     end
@@ -411,7 +411,7 @@ function DrawDynamicScreen()
 
     -- Draw Actual Change in/out
     term.setCursor(30 + 21, visual_y_start + 6)
-    if iorate ~= nil then ioratechange =  convert_value(iorate, "A") end
+    if iorate ~= nil then ioratechange =  convert_value(math.abs(iorate), "A") end
     gpu.setForeground(eucolor)
     if ioratechange ~= nil then term.write(ioratechange); eol(); end
     gpu.setForeground(fg_default)
