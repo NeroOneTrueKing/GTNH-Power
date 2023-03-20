@@ -43,23 +43,27 @@ end
 -- 'a' -- gregtech amp notation;            ex) 1.23 A LuV
 -- 'p' -- SI prefix notation;               ex) 1.23 G
 function convert_value(eu, format)
-
-    local exp = math.floor(math.log(eu, 1000))
-    local tier = math.floor(math.log(eu/8, 4))
+    local exp; 
+    local tier; 
+	if eu == 0 then
+		exp = 0
+		tier = 1
+	else
+		exp  = math.floor(math.log(eu, 1000))
+		tier = math.floor(math.log(eu/8, 4))
+	end
 
     local tiers_str = { "LV", "MV", "HV", "EV", "IV", "LuV", "ZPM", "UV", "UHV", "UHV+" }
     local prefx_str = { " ", "K", "M", "G", "T", "P", "E", "Z", "Y"}
     
-    if eu == 0 then return "0 EU" end
-
     if format == "e" or format == "E" then
-        return string.format("%3.2f %s%d", eu / math.pow(1000, exp), format, exp*3)
+        return string.format("%6.2f %s%d", eu / math.pow(1000, exp), format, exp*3)
     elseif format == "p" or format == "P" then
-        return string.format("%2.2f %s", eu / math.pow(1000, exp), prefx_str[exp + 1])
+        return string.format("%6.2f %s", eu / math.pow(1000, exp), prefx_str[exp + 1])
     elseif format == "a" or format == "A" then
-        return string.format("%3.2f %s %3s", eu / (math.pow(4, tier)*8), format, tiers_str[tier])
+        return string.format("%5.2f %s %3s", eu / (math.pow(4, tier)*8), format, tiers_str[tier])
     else
-        return string.format("%.2f", eu)
+        return string.format("%6.2f", eu)
     end
 end
 
