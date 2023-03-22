@@ -28,14 +28,6 @@ res_x = 120
 res_y = 25
 gpu.setResolution(res_x, res_y)
 
--- Functions
-
-function exit_msg(msg)
-  term.clear()
-  print(msg)
-  os.exit()
-end
-
 
 -- Conversions
 -- formats:
@@ -461,8 +453,13 @@ local event_id
 function end_event_loop()
     event_loop = false
     event.cancel(event_id)  -- very important, lol
+	RS.off()
     gpu.setForeground(fg_default)
-    exit_msg("Key pressed; program ended.")
+	term.clear()
+	print("Key pressed; program ended.")
+	os.exit()
+  end
+  
 end
 event_id = event.listen("key_up", end_event_loop)
 

@@ -19,9 +19,8 @@ function on()
 
     if wirelessRS then
         toggleRS.setWirelessOutput(true)
-    else
-        toggleRS.setOutput({15,15,15,15,15,15})
-    end
+	end
+	toggleRS.setOutput({15,15,15,15,15,15})
 end
 
 function off()
@@ -29,9 +28,8 @@ function off()
 
     if wirelessRS then
         toggleRS.setWirelessOutput(false)
-    else
-        toggleRS.setOutput({0,0,0,0,0,0})
-    end
+	end
+	toggleRS.setOutput({0,0,0,0,0,0})
 end
 
 function getstatus()
