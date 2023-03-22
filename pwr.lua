@@ -457,9 +457,7 @@ function end_event_loop()
     gpu.setForeground(fg_default)
 	term.clear()
 	print("Key pressed; program ended.")
-	os.exit()
-  end
-  
+	os.exit()  
 end
 event_id = event.listen("key_up", end_event_loop)
 
