@@ -8,7 +8,6 @@ function init()
 		toggleRS.setWakeThreshold(1)
 		status = {}
 		statuscnt = 0
-        off()
     end
 end
 
