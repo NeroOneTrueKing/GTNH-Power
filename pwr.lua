@@ -45,8 +45,8 @@ function convert_value(eu, format)
 		tier = math.floor(math.log(eu/8, 4))
 	end
 
-    local tiers_str = { 0="", "LV", "MV", "HV", "EV", "IV", "LuV", "ZPM", "UV", "UHV", "UHV+" }
-    local prefx_str = { 0=" ", "K", "M", "G", "T", "P", "E", "Z", "Y"}
+    local tiers_str = { [0]="", "LV", "MV", "HV", "EV", "IV", "LuV", "ZPM", "UV", "UHV", "UHV+" }
+    local prefx_str = { [0]=" ", "K", "M", "G", "T", "P", "E", "Z", "Y"}
     
     if format == "e" or format == "E" then
         return string.format("%6.2f %s%d", eu / math.pow(1000, exp), format, exp*3)
