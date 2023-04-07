@@ -8,6 +8,10 @@ function init()
 		toggleRS.setWakeThreshold(1)
 		status = {[0]=false,false,false,false,false,false}
 		statuscnt = 0
+		statusmax = 0
+		for k,v in pairs(cfg.sidegenON) do
+			statusmax = statusmax + 1
+		end
 		off()
     end
 end
@@ -32,7 +36,7 @@ function off(side)
 end
 
 function getstatus()
-    return statuscnt .. "/" .. #cfg.sidegenON
+    return statuscnt .. "/" .. statusmax
 end
 
 function toggle(percentenergy)
