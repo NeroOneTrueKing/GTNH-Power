@@ -453,7 +453,6 @@ local event_id
 function end_event_loop()
     event_loop = false
     event.cancel(event_id)  -- very important, lol
-	RS.off()
     gpu.setForeground(fg_default)
 	term.clear()
 	print("Key pressed; program ended.")
