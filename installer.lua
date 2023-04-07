@@ -20,3 +20,5 @@ end
 if not exists("config.lua") then
     shell.execute(string.format("wget %s%s/config.lua", repo, branch));
 end
+
+shell.execute("reboot");
