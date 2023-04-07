@@ -28,7 +28,7 @@ function off(side)
 	if side == nil then
 		status = {[0]=false,false,false,false,false,false}
 		toggleRS.setOutput({[0]=0,0,0,0,0,0})
-	elseif if status[side] then
+	elseif status[side] then
 		status[side] = false
 		statuscnt = statuscnt - 1
 		toggleRS.setOutput({[side]=0})
