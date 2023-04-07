@@ -6,6 +6,7 @@ function init()
     if cfg.RedstoneEnabled then
         toggleRS = component.redstone
 		toggleRS.setWakeThreshold(1)
+		status = {}
 		statuscnt = 0
         off()
     end
