@@ -1,48 +1,43 @@
 local component = require("component")
 local cfg = require("config")
 
-local wirelessRS
 
 function init()
     if cfg.RedstoneEnabled then
         toggleRS = component.redstone
-        wirelessRS = cfg.WirelessFrequency > 0
-        if wirelessRS then
-            toggleRS.setWirelessFrequency(cfg.WirelessFrequency)
-        end
+		toggleRS.setWakeThreshold(1)
+		statuscnt = 0
         off()
     end
 end
 
-function on()
-    status = true
-
-    if wirelessRS then
-        toggleRS.setWirelessOutput(true)
-	end
-	toggleRS.setOutput({15,15,15,15,15,15})
+function on(side)
+    status[side] = true
+	statuscnt = statuscnt + 1
+	toggleRS.setOutput({[side]=15})
 end
 
-function off()
-    status = false
-
-    if wirelessRS then
-        toggleRS.setWirelessOutput(false)
-	end
-	toggleRS.setOutput({0,0,0,0,0,0})
+function off(side)
+    status[side] = false
+	statuscnt = statuscnt - 1
+	toggleRS.setOutput({[side]=0})
 end
 
 function getstatus()
-    return status and "ON" or "OFF"
+    return statuscnt .. "/" .. #cfg.sidegenON
 end
 
 function toggle(percentenergy)
-    if percentenergy <= cfg.genON then
-        on()
-    end
-    if percentenergy >= cfg.genOFF then 
-        off()
-    end    
+	for k,v in pairs(cfg.sidegenON) do
+		if percentenergy <= v then
+			on(k)
+		end
+	end
+	for k,v in pairs(cfg.sidegenOFF) do
+		if percentenergy >= v then
+			off(k)
+		end
+	end
 end
 
 function nullfunc() end

@@ -11,13 +11,11 @@ return {
 ----------------------
     -- Redstone I/O connected to system for Generator enabling / Value true or false, default: false
     RedstoneEnabled = true,
-    -- Generators' wireless frequency, if using a tier-2 redstone card. If =0, does not use.
-    WirelessFrequency = 204,
-    -- Redstone signal turns on when percentenergy drops below this
-    genON = 60,
-    -- Redstone signal turns off when percentenergy drops below this
-    genOFF = 95,
 
+	-- redstone turns on/off at these thresholds for each side:
+	sidegenON  = {[0]= nil,  nil,  nil,  nil,   90,   60},
+	sidegenOFF = {[0]= nil,  nil,  nil,  nil,   99,   95},
+	--              bottom   top  back front right  left
 
 ----------------------
 -- MISC SETTINGS

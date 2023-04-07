@@ -45,13 +45,13 @@ function convert_value(eu, format)
 		tier = math.floor(math.log(eu/8, 4))
 	end
 
-    local tiers_str = { "LV", "MV", "HV", "EV", "IV", "LuV", "ZPM", "UV", "UHV", "UHV+" }
-    local prefx_str = { " ", "K", "M", "G", "T", "P", "E", "Z", "Y"}
+    local tiers_str = { 0="", "LV", "MV", "HV", "EV", "IV", "LuV", "ZPM", "UV", "UHV", "UHV+" }
+    local prefx_str = { 0=" ", "K", "M", "G", "T", "P", "E", "Z", "Y"}
     
     if format == "e" or format == "E" then
         return string.format("%6.2f %s%d", eu / math.pow(1000, exp), format, exp*3)
     elseif format == "p" or format == "P" then
-        return string.format("%6.2f %s", eu / math.pow(1000, exp), prefx_str[exp + 1])
+        return string.format("%6.2f %s", eu / math.pow(1000, exp), prefx_str[exp])
     elseif format == "a" or format == "A" then
         return string.format("%5.2f %s %3s", eu / (math.pow(4, tier)*8), format, tiers_str[tier])
     else
@@ -408,7 +408,7 @@ function DrawDynamicScreen()
     -- Draw Actual Change in/out
     term.setCursor(30 + 21, visual_y_start + 6)
     if iorate ~= nil then ioratechange =  convert_value(math.abs(iorate), "A") end
-    gpu.setForeground(eucolor)
+    gpu.setForeground(fg_color_io)
     if ioratechange ~= nil then term.write(ioratechange); eol(); end
     gpu.setForeground(fg_default)
 
