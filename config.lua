@@ -1,12 +1,6 @@
 -- config settings
 return {
 ----------------------
--- PRIMARY FUNCTION
-----------------------
-    -- Address of the LSC
-    MSCProxy = "577b915d-70cf-4a35-8138-41189defbf0c",
-
-----------------------
 -- REDSTONE CONTROL
 ----------------------
     -- Redstone I/O connected to system for Generator enabling / Value true or false, default: false
@@ -22,8 +16,6 @@ return {
 ----------------------
     -- Seconds between screen refreshes. 2 is standard
     loopdelay = 2,
-    -- function disabled as in 2.3 has LSC fix for average per second, can be turned on for longer average eu consumption.
-    AVEUToggle = false,
     -- Turns off the arrow underneath the meters
     ArrowOff = false,
     -- io value to size arrow against 
