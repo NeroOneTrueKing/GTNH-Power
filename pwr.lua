@@ -4,7 +4,8 @@
 -- V3 disable the average table and enable the new average in/out from v2.3 LSC
 -- V3.1 added Toggle functions for clr.Red100Off and ArrowOff
 -- V4 forked by NeroOneTrueKing to add wireless redstone support
--- pastebin get dU5feqYz pwr.lua
+-- For original:
+--     pastebin get dU5feqYz pwr.lua
 
 local component = require("component")
 local computer = require("computer")
@@ -15,13 +16,16 @@ local sides = require("sides")
 local RS = require("redstone-control")
 local cfg = require("config")
 local clr = cfg.clr
-local MT = {}
-local TimeTable = {}
 
 -- START OF CODE
--- Setup components
-msc = component.proxy(cfg.MSCProxy)
-storage = msc
+-- Find LSC
+for k, v in component.list("gt_machine") do
+	if component.invoke(k, "getName") == "multimachine.supercapacitor" then
+		msc = component.proxy(k)
+	end
+end
+
+assert(msc ~= nil, "ERROR: Needs an adaptor next to an LSC!")
 
 -- Set Resolution
 res_x = 120
@@ -59,7 +63,6 @@ function convert_value(eu, format)
     end
 end
 
-
 function get_percent_color(energy)
     local energycolor
     if energy <= 5 then
@@ -73,14 +76,12 @@ function get_percent_color(energy)
     elseif energy <= 99 then
         energycolor = clr.BLUE
     else
-        energycolor = clr.BLACK
+        energycolor = clr.PURPLE
     end
     return energycolor
 end
 
-
 -- Draw sections
-
 function draw_legend()
     gpu.setForeground(fg_default)
 
@@ -185,7 +186,6 @@ function draw_direction(io)
 end
 
 function draw_visuals(percent)
-
   term.setCursor(offset, visual_y_start + 13)
   for check = 0, 100, 1
   do
@@ -201,8 +201,6 @@ function draw_visuals(percent)
   end
 end
 
-
-
 -- Convert string to number  , credits to nidas
 function parser(string)
     if type(string) == "string" then
@@ -217,55 +215,17 @@ function parser(string)
 end
 
 
--- Average table calculator
-function AverageEU(TableAverageEU, EUstored)
-    local euold = 0
-    local eunew = 0
-    local eusom = 0
-    local AveEU = 0
-    local i = 1
-    local told = 0
-    local tnew = 0
-    local tsom = 0
-
-    table.insert(TableAverageEU, 1, EUstored)
-    table.insert(TimeTable,1, computer.uptime())
-    
-    if #TableAverageEU > 11 then
-        while i <= 10 do
-          if i == 1 then
-            euold = TableAverageEU[1]
-            told = TimeTable[1]
-          else
-            eunew = TableAverageEU[i]
-            eusom = (eunew - euold) + eusom
-            euold = eunew
-            
-            tnew = TimeTable[i]
-            tsom = (tnew - told) + tsom
-            told = tnew
-
-          end
-          i = i + 1
-        end
-        AveEU = eusom / 10 / tsom
-    else
-        AveEU = 0
-    end
-    return AveEU
-end
-
 -- Main Code
 term.clear()
 
 ylogo = 36
 gpu.setForeground(clr.YELLOW)
-term.setCursor(ylogo, 1 + 4) term.write("        ░░░             ░░             ░░░        ")
-term.setCursor(ylogo, 1 + 5) term.write("          ░░░           ░░           ░░░          ")
-term.setCursor(ylogo, 1 + 6) term.write("         ░░             ░░             ░░░        ")
-term.setCursor(ylogo, 1 + 7) term.write("        ░░░░            ░░               ░░       ")
-term.setCursor(ylogo, 1 + 8) term.write("       ░░  ░░           ░░               ░░░      ")
-term.setCursor(ylogo, 1 + 9) term.write("      ░░    ░░░         ░░                ░░░     ")
+term.setCursor(ylogo, 1 +  4) term.write("        ░░░             ░░             ░░░        ")
+term.setCursor(ylogo, 1 +  5) term.write("          ░░░           ░░           ░░░          ")
+term.setCursor(ylogo, 1 +  6) term.write("         ░░             ░░             ░░░        ")
+term.setCursor(ylogo, 1 +  7) term.write("        ░░░░            ░░               ░░       ")
+term.setCursor(ylogo, 1 +  8) term.write("       ░░  ░░           ░░               ░░░      ")
+term.setCursor(ylogo, 1 +  9) term.write("      ░░    ░░░         ░░                ░░░     ")
 term.setCursor(ylogo, 1 + 10) term.write("      ░░      ░░        ░░                ░░░     ")
 term.setCursor(ylogo, 1 + 11) term.write("  ░░░░░░        ░░      ░░░░░░░░░░░░░░░░░░░░░░░░  ")
 term.setCursor(ylogo, 1 + 12) term.write("      ░░         ░░░    ░░                ░░░     ")
@@ -411,17 +371,6 @@ function DrawDynamicScreen()
     gpu.setForeground(fg_color_io)
     if ioratechange ~= nil then term.write(ioratechange); eol(); end
     gpu.setForeground(fg_default)
-
-
-    -- Draw EU/Average Change: 
-    if cfg.AVEUToggle == true then
-      term.setCursor(30 + 21, visual_y_start + 7)
-      AVEU = AverageEU(MT, storedenergyinit)
-      AVEU = convert_value(AVEU, "A")
-      gpu.setForeground(eucolorx)
-      if AVEU ~=nil then term.write(AVEU); eol(); end
-      gpu.setForeground(fg_default)
-    end
 
     -- Draw Maintenance status
     term.setCursor(30 + 21, visual_y_start + 8)
