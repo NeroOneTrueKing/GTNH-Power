@@ -4,7 +4,7 @@ local cfg = require("config")
 
 function init()
     if cfg.RedstoneEnabled then
-		assert(next(component.list["redstone"]), "ERROR: Redstone enabled in config, but no redstone component!");
+		assert(next(component.list("redstone")), "ERROR: Redstone enabled in config, but no redstone component!");
         toggleRS = component.redstone
 		toggleRS.setWakeThreshold(1)
 		status = {[0]=false,false,false,false,false,false}
